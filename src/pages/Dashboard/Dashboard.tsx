@@ -1,20 +1,21 @@
 
-import { JSX, useState } from 'react';
+import { JSX, useState , useEffect } from 'react';
+import { useNavigate , useParams } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import '../styles/card.css';
-import '../styles/navbar.css';
-import logo from "../assets/ChatGPT Image 14 de abr. de 2025, 20_40_13.png"
-import carrosel from "../assets/banner 2.png"
-import carrosel1 from "../assets/banner 43.png"
-import carrosel2 from "../assets/test.png"
-import mil from "../assets/1984.jpg"
-import dom from "../assets/domcasmurro.jpg"
-import hobbit from "../assets/hobbit.jpg"
-import naruto from "../assets/naruto.jpg"
-import percy from "../assets/percy.jpg"
-import menina from "../assets/menina.jpg"
-import harry from "../assets/harry.jpg"
-import it from "../assets/it.jpg"
+import '../../styles/card.css';
+import '../../styles/navbar.css';
+import logo from "../../assets/ChatGPT Image 14 de abr. de 2025, 20_40_13.png"
+import carrosel from "../../assets/banner 2.png"
+import carrosel1 from "../../assets/banner 43.png"
+import carrosel2 from "../../assets/test.png"
+import mil from "../../assets/1984.jpg"
+import dom from "../../assets/domcasmurro.jpg"
+import hobbit from "../../assets/hobbit.jpg"
+import naruto from "../../assets/naruto.jpg"
+import percy from "../../assets/percy.jpg"
+import menina from "../../assets/menina.jpg"
+import harry from "../../assets/harry.jpg"
+import it from "../../assets/it.jpg"
 
 
 interface Book {
@@ -36,10 +37,29 @@ const books: Book[] = [
   { id: 8, title: 'IT - A Coisa', genre: 'Terror', image: it , price: 'R$ 89,90'},
 ];
 
+
+
 export default function Dashboard(): JSX.Element {
   const [filtro, setFiltro] = useState<string>('');
   const livrosFiltrados = filtro ? books.filter(book => book.genre === filtro) : books;
 
+  const { id } = useParams();
+  const [book, setBook] = useState<Book | undefined>();
+
+  useEffect(() => {
+    const found = books.find(b => b.id === Number(id));
+    setBook(found);
+  }, [id]);
+
+
+
+
+
+  const navigate = useNavigate();
+
+  const handleClick = (bookId: number) =>{
+    navigate(`/Product/${bookId}`);
+  }
   return (
     <div className="container-fluid p-0 min-vh-100 d-flex flex-column">
 
@@ -122,7 +142,7 @@ export default function Dashboard(): JSX.Element {
                   <p className="card-text fw-bold text-success">{book.price}</p>
                   <div className="d-grid gap-2">
                     <button className="btn btn-success">Adicionar ao carrinho 🛒</button>
-                    <button className="btn btn-outline-secondary">Ver mais</button>
+                    <button className="btn btn-outline-secondary" onClick={() =>handleClick(book.id)}>Ver mais</button>
                   </div>
                 </div>
               </div>
